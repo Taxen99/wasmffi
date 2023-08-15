@@ -1,7 +1,6 @@
 #include "ffi.h"
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 void ffi_call(ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue) {
 @@FFI_CALL_IMPL@@

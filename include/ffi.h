@@ -1,24 +1,20 @@
 #ifndef FFI_H
 #define FFI_H
 
+#include <stdlib.h>
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
-
-typedef enum {
-  _FFI_TYPE_VOID = 0,
-  _FFI_TYPE_I32,
-  _FFI_TYPE_I64,
-  _FFI_TYPE_F32,
-  _FFI_TYPE_F64,
-} _FFI_TYPE_ENUM;
 
 typedef enum {
   FFI_DEFAULT_ABI = 0,
 } ffi_abi;
 
 typedef struct {
-  _FFI_TYPE_ENUM type;
+  size_t size;
+  unsigned short alignment;
+  unsigned short type;
 } ffi_type;
 
 typedef enum {
