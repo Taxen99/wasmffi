@@ -1,7 +1,7 @@
 # WasmFFI
 
 A quick and dirty implementation of libffi in WebAssembly!
-Based on https://github.com/tweag/libffi-wasm32/blob/master/libffi-wasm32.cabal
+Based on https://github.com/tweag/libffi-wasm32
 
 # Building
 
