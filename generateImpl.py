@@ -1,6 +1,15 @@
 from math import log, floor
 import re
 import subprocess
+import sys
+
+def is_number(s):
+    """Check if the given string can be converted to a int."""
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 def clang_format_code(code: str) -> str:
     """Format a C/C++ code string using clang-format."""
@@ -20,7 +29,7 @@ def clang_format_code(code: str) -> str:
     return stdout
 
 def FFI_CALL_IMPL():
-    max_number_of_arguments = 8
+    max_number_of_arguments = int(sys.argv[1]) if len(sys.argv) > 1 and is_number(sys.argv[1]) else 2
     type_map = [
         "void",
         "uint32_t",
@@ -54,22 +63,24 @@ def FFI_CALL_IMPL():
 
     switch(cif->encoding) {{
         {"".join(f'''
-        case {hex(encoding)}:
+        case###{hex(encoding)}:
             {f"*(({encoding_to_type(encoding, 0)} *)rvalue) =" if encoding_to_type(encoding, 0) != "void" else ""}
             (({encoding_to_type(encoding, 0)}(*)({", ".join(encoding_to_type(encoding, arg_index + 1) for arg_index in range(0, encoding_to_arg_num(encoding)))}))fn)
             ({", ".join(f"*(({encoding_to_type(encoding, arg_index + 1)} *)(avalue[{hex(arg_index)}]))" for arg_index in range(0, encoding_to_arg_num(encoding)))});
             return;
         
         ''' if valid_encoding(encoding) else "" for encoding in range(0, len(type_map) ** (max_number_of_arguments + 1)))}
+default:
+    fprintf(stderr, "Invalid###cif:###%u,###Aborting###the###program.\n", cif->encoding);
+    exit(EXIT_FAILURE);
     }}
-
     """
 
 def custom_replace(match):
     function_name = match.group(1)
     # try:
         # Using eval to call the function
-    result = re.sub(r'\s+', ' ', eval(function_name + "()").replace("\n",""))
+    result = (eval(function_name + "()").replace("\n","").replace(" ", "").replace("###", " "))
     # except Exception as e:
         # print(f"Error calling function {function_name}: {str(e)}")
         # result = ""
@@ -87,6 +98,6 @@ def process_file(input_filepath, output_filepath):
 
 if __name__ == "__main__":
     input_path = 'src/ffi_call.c.template'
-    output_path = 'src/test.c'
+    output_path = 'src/ffi_call.c'
     process_file(input_path, output_path)
     print(f"Processed {input_path} and saved to {output_path}")

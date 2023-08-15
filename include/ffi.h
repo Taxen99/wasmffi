@@ -46,7 +46,7 @@ typedef unsigned long long ffi_arg;
 #define ffi_type_sint64 _ffi_type_i64
 #define ffi_type_float _ffi_type_f32
 #define ffi_type_double _ffi_type_f64
-#define ffi_type_pointer _ffi_type_i64
+#define ffi_type_pointer _ffi_type_i32
 
 extern ffi_type _ffi_type_void;
 extern ffi_type _ffi_type_i32;
