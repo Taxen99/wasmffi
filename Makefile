@@ -2,7 +2,7 @@ default: staticlib
 
 CC=emcc
 AR=emar
-CCFLAGS=-O3 -Iinclude -Wall -Wno-incompatible-function-pointer-types
+CCFLAGS=-fPIC -O3 -Iinclude -Wall -Wno-incompatible-function-pointer-types
 
 bin/example: bin/ffi.o bin/example.o bin/ffi_call.o
 	mkdir -p bin
